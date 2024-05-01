@@ -9,8 +9,8 @@
 
 The app was designed to replace key features of the built-in `django.contrib.auth` package. Developers may simply replace the appropriate backends and URLs and let Uniauth handle authentication entirely if they wish. However, the app is also fully customizable, and components may be swapped with compatible replacements if desired.
 
-<p align="center">
-  <img src="https://s3.amazonaws.com/uniauth/documentation/Login+Page.png" />
+<p style="text-align: center">
+  <img src="https://s3.amazonaws.com/uniauth/documentation/Login+Page.png" alt="login panel"/>
 </p>
 
 ## Features
@@ -117,7 +117,7 @@ The following custom settings are also used:
 
 Uniauth supports any custom User model, so long as the model has `username` and `email` fields. The `email` serves as the primary identifying field within Uniauth, with the `username` being set to an arbitrary unique value to support packages that require it. Once a user's profile has been activated, other apps are free to change the `username` without disrupting Uniauth's behavior.
 
-Users are created by either completing the Sign Up form, or logging in via an `InstitutionAccount`. In the former case, they are given a username beginning with `tmp-`, followed by a unique suffix, and an empty `email` field. When the first email for a user has been verified, their profile is considered fully activated, the `email` field is set to the verified email, and the `username` field is arbitrarily set to that email address as well, unless it is taken. In the latter case, they are given a username describing how they were authenticated, along with the institution they signed into and their ID for that institution. They will keep this username and have an empty `email` field until they link their account to a verified Uniauth profile.
+Users are created by either completing the Sign-Up form, or logging in via an `InstitutionAccount`. In the former case, they are given a username beginning with `tmp-`, followed by a unique suffix, and an empty `email` field. When the first email for a user has been verified, their profile is considered fully activated, the `email` field is set to the verified email, and the `username` field is arbitrarily set to that email address as well, unless it is taken. In the latter case, they are given a username describing how they were authenticated, along with the institution they signed in to and their ID for that institution. They will keep this username and have an empty `email` field until they link their account to a verified Uniauth profile.
 
 Users may have multiple email addresses linked to their profile, any of which may be used for authentication (if one of the `LinkedEmail` [Uniauth backends](https://github.com/lgoodridge/django-uniauth#backends) are used), or for password reset. The address set in the user's `email` field is considered the "primary email", and is the only one that must be unique across all users. Users may change which linked email is their primary email address at any point via the `settings` page, so long as that primary email is not taken by another user.
 
@@ -131,7 +131,7 @@ Uniauth has the following models:
 
 This model is automatically attached to each User upon creation, and extends the User model with the extra data Uniauth requires. The other Uniauth models all interact with the `UserProfile` model rather than the User model directly. Accessible via `user.uniauth_profile`.
 
- - `get_display_id`: This method returns a more display-friendly ID for the user, using their username. If the User was created via CAS authentication, it will return their username without the institution prefix (so a User with username "cas-exampleinst-id123" would return "id123"). If their username is an email address, it will return everything before the "@" symbol (so "johndoe@example.com" would become "johndoe"). Otherwise the username is returned unmodified. These generated IDs are not guaranteed to be unique.
+ - `get_display_id`: This method returns a more display-friendly ID for the user, using their username. If the User was created via CAS authentication, it will return their username without the institution prefix (so a User with username "cas-exampleinst-id123" would return "id123"). If their username is an email address, it will return everything before the "@" symbol (so "johndoe@example.com" would become "johndoe"). Otherwise, the username is returned unmodified. These generated IDs are not guaranteed to be unique.
 
 ### LinkedEmail:
 
@@ -139,7 +139,7 @@ Represents an email address linked to a User's account. Accessible via `user.uni
 
 ### Institution:
 
-Represents an organization possesing an authentication server that can be logged into. You will need to add an Institution for each CAS server you wish to support. The `add_institution` and `remove_institution` commands are provided to help with this.
+Represents an organization possessing an authentication server that can be logged into. You will need to add an Institution for each CAS server you wish to support. The `add_institution` and `remove_institution` commands are provided to help with this.
 
 ### InstitutionAccount:
 
@@ -172,7 +172,7 @@ Uniauth provides the following management commands:
  - `add_institution <name> <cas_server_url>`: Adds an `Institution` with the provided name and CAS server URL to the database. The `name` will be the text displayed in the CAS server dropdown on the Login page, and `cas_server_url` must point to the root URL of a CAS protocol compliant service. The command will return the institution's slug created from the provided name; this slug must be used when referring to the institution in other commands (such as `remove_institution`).
      - Example Usage: `python manage.py add_institution "Example Inst" "https://www.example.com/cas/"`
      - You may add the `--update-existing` option to update the CAS server URL of an existing institution with that name, or create one if it does not exist.
- - `remove_institution <slug>`: Removes the `Institution` with the provided slug from the database. This action removes any `InstitutionAccounts` for that instiutiton in the process.
+ - `remove_institution <slug>`: Removes the `Institution` with the provided slug from the database. This action removes any `InstitutionAccounts` for that institution in the process.
  - `migrate_cas <slug>`: Migrates a project originally using CAS for authentication to using Uniauth. See the [User Migration](https://github.com/lgoodridge/django-uniauth#user-migration) section for more information.
  - `migrate_custom`: Migrates a project originally using custom User authentication to using Uniauth. See the [User Migration](https://github.com/lgoodridge/django-uniauth#user-migration) section for more information.
  - `flush_tmp_users [days]`: Deletes temporary users more than the specified number of days old from the database. The default number of days is 1.
@@ -182,7 +182,7 @@ Uniauth provides the following management commands:
 The five views you will likely care about the most are `login`, `logout`, `signup`, `password-reset`, and `settings`:
 
  - `/login/`: Displays a page allowing users to log in by entering a username/email and password, or via a supported backend, such as CAS. Also displays links for creating an account directly, and for resetting passwords.
- - `/logout/`: Logs out the user. The behavior and redirect location of the log out is determined by the app's settings.
+ - `/logout/`: Logs out the user. The behavior and redirect location of the log-out is determined by the app's settings.
  - `/signup/`: Prompts user for a primary email address, and a password, then sends a verification email to that address to activate the account.
  - `/password-reset/`: Prompts user for an email address, then sends an email to that address containing a link for resetting the password. If no users have the entered email address linked to their account, no email is sent. If multiple users have that address linked, an email is sent for each potential user.
  - `/settings/`: Allows users to perform account related actions, such as link more email addresses, choose the primary email address, link more Institution Accounts, or change their password.
@@ -243,10 +243,10 @@ The only URL parameter that is not preserved is the `next` variable, which indic
 
 If you wish to use Uniauth with a project that already has users, a `UserProfile` (and, if applicable, `LinkedEmail` or `InstitutionAccount`) will need to be created for each existing user. You may use one of the provided commands to assist with this, provided your project meets one of the following conditions:
 
- - If you were previously using CAS for authentication, and the username for each user matches the CAS ID (as would be the case if you were using a package like [django-cas-ng](https://github.com/mingchen/django-cas-ng)), you should first [add an Institution](https://github.com/lgoodridge/django-uniauth#commands) for the CAS server you were using, then use the `migrate_cas` command with the slug of the created Institution to peform the migration. A `UserProfile` will be created for all users, and the usernames of all Users will be changed to conform to Uniauth's expectations (to `cas-<institution_slug>-<original_username>`). To get the original username (without the CAS institution prefix), use the `get_display_id` method provided by the `UserProfile` model.
+ - If you were previously using CAS for authentication, and the username for each user matches the CAS ID (as would be the case if you were using a package like [django-cas-ng](https://github.com/mingchen/django-cas-ng)), you should first [add an Institution](https://github.com/lgoodridge/django-uniauth#commands) for the CAS server you were using, then use the `migrate_cas` command with the slug of the created Institution to perform the migration. A `UserProfile` will be created for all users, and the usernames of all Users will be changed to conform to Uniauth's expectations (to `cas-<institution_slug>-<original_username>`). To get the original username (without the CAS institution prefix), use the `get_display_id` method provided by the `UserProfile` model.
  - If you were previously using custom user authentication (as in, Users would sign up with a username / email address and password), you may use the `migrate_custom` command to migrate the users. A `UserProfile` will be created for each migrated user, and a verified `LinkedEmail` will also be created for all users with a non-blank `email` field. Note that any users lacking a username / email or password will not be migrated. Also note that if the `LinkedEmailBackend` is used, users that don't have a `LinkedEmail` created will not be able to log in until one is linked.
 
-If your project does not fit either of these conditions, you will need to manually migrate the users as appropiate. Please create a `UserProfile` for each user, and `LinkedEmails` or `InstitutionAccounts` as appropiate.
+If your project does not fit either of these conditions, you will need to manually migrate the users as appropriate. Please create a `UserProfile` for each user, and `LinkedEmails` or `InstitutionAccounts` as appropriate.
 
 ## Using JWT Authentication
 
@@ -268,7 +268,7 @@ Please refer to [django-rest-framework-simplejwt](https://pypi.org/project/djang
 
 ## Demo Application
 
-The source repository contains a `demo_app` directory which demonstrates how to setup a simple Django app to use Uniauth. This app has no functionality, and exists solely to show off the installable `uniauth` app. A quick-start guide for integrating Uniauth can be found [here](https://github.com/lgoodridge/django-uniauth/tree/master/demo_app).
+The source repository contains a `demo_app` directory which demonstrates how to set up a simple Django app to use Uniauth. This app has no functionality, and exists solely to show off the installable `uniauth` app. A quick-start guide for integrating Uniauth can be found [here](https://github.com/lgoodridge/django-uniauth/tree/master/demo_app).
 
 ## Acknowledgements
 

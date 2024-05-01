@@ -14,8 +14,9 @@ format:
 
 # Perform initial developer setup
 # You will still need to setup tox to work with multiple
-# python environements, perhaps with pyenv
+# python environments, perhaps with pyenv
 install:
+	pip install --upgrade pip wheel setuptools
 	pip install -r requirements.txt
 	pip install tox
 
@@ -39,7 +40,7 @@ test:
 test-env:
 	tox -e ${ENV}
 
-# Run after a dependency / supported verion update
+# Run after a dependency / supported version update
 # to recreate test environments
 test-recreate:
 	tox -r

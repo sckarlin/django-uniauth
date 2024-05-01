@@ -1,6 +1,50 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-uniauth"
+version = "1.4.1"
+description = "A Django app for managing CAS and custom user authentication."
+keywords = ["django", "auth", "authentication", "cas", "sso", "single sign-on"]
+readme = "README.md"
+requires-python = ">=3.5"
+license = { file = "LICENSE.md"}
+authors = [
+    { name = "Lance Goodridge", email = "ldgoodridge95@gmail.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 1.11",
+    "Framework :: Django :: 2",
+    "Framework :: Django :: 3",
+    "Framework :: Django :: 4",
+    "Framework :: Django :: 5",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    # Specify explicit dependencies here:
+    "Django >=1.11",
+    "python-cas >=1.4.0",
+    "djangorestframework-simplejwt >=4.1.0",
+]
+
+[project.urls]
+"Source Code" = "https://github.com/lgoodridge/django-uniauth"
+"Bug Tracker" = "https://github.com/lgoodridge/django-uniauth/issues"
+
 [tool.black]
 line-length = 79
 
 [tool.isort]
 profile = 'black'
 line_length = 79
+
+[tool.setuptools.packages.find]
+exclude = ["demo-app"]

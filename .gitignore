@@ -44,6 +44,9 @@ target/
 # Temp Files
 .*.sw*
 
+# virtual environment
+venv/
+
 # Other Files
 .DS_Store
 .idea
