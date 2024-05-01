@@ -8,7 +8,7 @@ version = "1.4.1"
 description = "A Django app for managing CAS and custom user authentication."
 keywords = ["django", "auth", "authentication", "cas", "sso", "single sign-on"]
 readme = "README.md"
-requires-python = ">=3.5"
+requires-python = ">=3.8"
 license = { file = "LICENSE.md"}
 authors = [
     { name = "Lance Goodridge", email = "ldgoodridge95@gmail.com"},
@@ -16,7 +16,6 @@ authors = [
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Django",
-    "Framework :: Django :: 1.11",
     "Framework :: Django :: 2",
     "Framework :: Django :: 3",
     "Framework :: Django :: 4",
@@ -30,7 +29,7 @@ classifiers = [
 ]
 dependencies = [
     # Specify explicit dependencies here:
-    "Django >=1.11",
+    "Django >=2.2.17",
     "python-cas >=1.4.0",
     "djangorestframework-simplejwt >=4.1.0",
 ]
