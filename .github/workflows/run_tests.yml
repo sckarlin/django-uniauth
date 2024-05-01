@@ -3,6 +3,7 @@ name: Run tests
 on:
   push:
     branches:
+      - master
       - py312dj5
   pull_request:
 
