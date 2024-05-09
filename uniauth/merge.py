@@ -25,14 +25,15 @@ def _get_generic_fields():
 
 
 @transaction.atomic()
-def merge_model_instances(primary_object, alias_objects, field_trace=[]):
+def merge_model_instances(primary_object, alias_objects, field_trace=None):
     """
     Merge several model instances into one, the `primary_object`.
-    Use this function to merge model objects and migrate all of the
+    Use this function to merge model objects and migrate all the
     related fields from the alias objects into the primary object.
 
     Performs recursive merging of related One-to-One fields.
     """
+    field_trace = field_trace or []
     generic_fields = _get_generic_fields()
 
     # get related fields
@@ -69,7 +70,7 @@ def merge_model_instances(primary_object, alias_objects, field_trace=[]):
                     getattr(primary_object, alias_varname).add(obj)
                 except AttributeError:
                     # Handle M2M relationships with a 'through' model.
-                    # This does not delete the 'through model.
+                    # This does not delete the 'through' model.
                     through_model = getattr(
                         alias_object, alias_varname
                     ).through
@@ -128,11 +129,10 @@ def merge_model_instances(primary_object, alias_objects, field_trace=[]):
                         related_object.delete()
 
         for field in generic_fields:
-            filter_kwargs = {}
-            filter_kwargs[field.fk_field] = alias_object._get_pk_val()
-            filter_kwargs[field.ct_field] = field.get_content_type(
-                alias_object
-            )
+            filter_kwargs = {
+                field.fk_field: alias_object._get_pk_val(),
+                field.ct_field: field.get_content_type(alias_object),
+            }
             related_objects = field.model.objects.filter(**filter_kwargs)
             for generic_related_object in related_objects:
                 setattr(generic_related_object, field.name, primary_object)

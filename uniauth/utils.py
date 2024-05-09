@@ -44,7 +44,7 @@ def choose_username(email):
     """
     Chooses a unique username for the provided user.
 
-    Sets the username to the email parameter umodified if
+    Sets the username to the email parameter unmodified if
     possible, otherwise adds a numerical suffix to the email.
     """
 
@@ -109,18 +109,12 @@ def get_account_username_split(username):
             "Value passed to get_account_username_split "
             + "was not the username for an unlinked InstitutionAccount."
         )
-    slug = "-".join(username_split[1 : len(username_split) - 1])
-    return (username_split[0], slug, username_split[len(username_split) - 1])
+    slug = "-".join(username_split[1: len(username_split) - 1])
+    return username_split[0], slug, username_split[len(username_split) - 1]
 
 
 def get_input(prompt):
-    """
-    Forwards to either raw_input or input, depending on Python version
-    """
-    try:
-        return raw_input(prompt)
-    except NameError:
-        return input(prompt)
+    return input(prompt)
 
 
 def get_protocol(request):
@@ -163,7 +157,7 @@ def get_redirect_url(request, use_referer=False, default_url=None):
             (get_protocol(request), request.get_host(), "", "", "", ""),
         )
         if redirect_url.startswith(prefix):
-            redirect_url = redirect_url[len(prefix) :]
+            redirect_url = redirect_url[len(prefix):]
     return redirect_url
 
 

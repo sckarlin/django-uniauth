@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -29,7 +28,7 @@ class UserProfile(models.Model):
         username. Users created via CAS authentication will have
         their CAS ID returned (without the cas-institution prefix),
         and Users with an email address for a username will have
-        the string preceeding the "@" returned. All other users
+        the string preceding the "@" returned. All other users
         will have their raw username returned.
 
         Note that these IDs are not guaranteed to be unique.

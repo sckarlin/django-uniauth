@@ -18,7 +18,6 @@ from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.core.mail import EmailMessage
 from django.http import (
     Http404,
-    HttpResponseBadRequest,
     HttpResponseRedirect,
     JsonResponse,
 )
@@ -106,15 +105,16 @@ def _get_global_context(request):
     return context
 
 
-def _login_success(request, user, next_url, drop_params=[]):
+def _login_success(request, user, next_url, drop_params=None):
     """
     Determines where to go upon successful authentication:
     Redirects to link tmp account page if user is a temporary
     user, redirects to next_url otherwise.
 
     Any query parameters whose key exists in drop_params are
-    not propogated to the destination URL
+    not propagated to the destination URL
     """
+    drop_params = drop_params or []
     query_params = request.GET.copy()
     jwt_auth = get_setting("UNIAUTH_USE_JWT_AUTH")
 
@@ -315,7 +315,7 @@ def logout(request):
         except Institution.DoesNotExist:
             pass
 
-    # If we need to logout an institution's CAS,
+    # If we need to log out from an institution's CAS,
     # redirect to that CAS server's logout URL
     if institution and get_setting("UNIAUTH_LOGOUT_CAS_COMPLETELY"):
         redirect_url = urlunparse(
@@ -458,7 +458,7 @@ def settings(request):
     change_password_form = None
 
     # This page may only be accessed by users with Uniauth profiles:
-    # if the user is logged in with an unlinked InsitutionAccount,
+    # if the user is logged in with an unlinked InstitutionAccount,
     # redirect them to the link page
     if is_unlinked_account(request.user):
         params = urlencode({"next": reverse("uniauth:settings")})
@@ -565,7 +565,7 @@ def settings(request):
 def _add_institution_account(profile, slug, cas_id):
     """
     Accepts an institution slug and cas ID and links an
-    InsitutionAccount to the provided Uniauth user.
+    InstitutionAccount to the provided Uniauth user.
     """
     institution = Institution.objects.get(slug=slug)
     InstitutionAccount.objects.create(
@@ -785,7 +785,7 @@ def verify_token(request, pk_base64, token):
         return render(request, "uniauth/verification-failure.html", context)
 
 
-# The password reset views are pulled from the django.conrib.auth
+# The password reset views are pulled from the django.contrib.auth
 # package, and are used largely unmodified. We just set things like
 # the template and reverse URL names to use Uniauth's files + naming
 # scheme.

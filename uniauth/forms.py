@@ -11,9 +11,9 @@ from django.contrib.auth.forms import SetPasswordForm as AuthSetPasswordForm
 from django.contrib.auth.forms import UserCreationForm
 
 try:
-    from django.utils.translation import ugettext_lazy as _
+    from django.utils.translation import ugettext_lazy as _  # Django <3
 except ImportError:
-    from django.utils.translation import gettext_lazy as _
+    from django.utils.translation import gettext_lazy as _  # Django >=3
 
 from uniauth.models import LinkedEmail
 from uniauth.utils import get_setting
@@ -68,7 +68,7 @@ class AddLinkedEmailForm(forms.Form):
         cleaned_data = super(AddLinkedEmailForm, self).clean()
         max_linked_emails = get_setting("UNIAUTH_MAX_LINKED_EMAILS")
         num_linked_emails = self.user.uniauth_profile.linked_emails.count()
-        if max_linked_emails > 0 and num_linked_emails >= max_linked_emails:
+        if (max_linked_emails > 0) and (num_linked_emails >= max_linked_emails):
             err_msg = (
                 "You can not link more than %d emails to your account."
                 % max_linked_emails

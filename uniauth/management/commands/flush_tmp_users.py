@@ -7,7 +7,7 @@ days old will be deleted. The default number of days is 1.
 Execution: python manage.py flush_tmp_users [days]
 """
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from uniauth.utils import flush_old_tmp_users, get_input
 
@@ -27,6 +27,6 @@ class Command(BaseCommand):
         )
         if answer == "y" or answer == "yes":
             num_deleted = flush_old_tmp_users(days=days)
-            self.stdout.write("Deleted %d temporary users.\n")
+            self.stdout.write(f"Deleted {num_deleted} temporary users.\n")
         else:
             self.stdout.write("Canceled.\n")

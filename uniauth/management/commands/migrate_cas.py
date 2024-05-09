@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from uniauth.models import Institution, InstitutionAccount, UserProfile
+from uniauth.models import Institution, UserProfile
 from uniauth.utils import get_input
 
 
@@ -24,7 +24,7 @@ class Command(BaseCommand):
         slug = options["slug"]
 
         try:
-            institution = Institution.objects.get(slug=slug)
+            _institution = Institution.objects.get(slug=slug)
         except Institution.DoesNotExist:
             raise CommandError("No institution with slug '%s' exists." % slug)
 
@@ -54,5 +54,5 @@ class Command(BaseCommand):
             user.username = "cas-%s-%s" % (slug, cas_id)
             user.save()
             # Add the profile
-            profile = UserProfile.objects.create(user=user)
+            _profile = UserProfile.objects.create(user=user)
         self.stdout.write("Done!\n")

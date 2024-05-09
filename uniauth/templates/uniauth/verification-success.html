@@ -35,7 +35,7 @@
                                     <a href="{{ next_url }}">Click here</a> to continue.
                                 {% elif not request.user.is_authenticated %}
                                     <br/><br/>
-                                    <a href="{% url 'uniauth:login' %}{{ query_params }}">Click here</a> to log in.</a>
+                                    <a href="{% url 'uniauth:login' %}{{ query_params }}">Click here</a> to log in.
                                 {% endif %}
                             </span>
                         </div>

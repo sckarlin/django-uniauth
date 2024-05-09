@@ -24,7 +24,7 @@ def get_jwt_tokens_for_user(user, **kwargs):
         refresh = import_string(
             jwt_settings.TOKEN_OBTAIN_SERIALIZER
         ).get_token(user)
-    except (AttributeError, ImportError) as error:
+    except (AttributeError, ImportError) as _error:
         # simplejwt defines a default token serializer that uses
         # RefreshToken, but this is here as a fallback in case something
         # is weirdly configured, or the installed simplejwt package is

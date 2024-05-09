@@ -1,6 +1,7 @@
 ## Demo App - Quick Start Guide
 
-This app provides an example of how to setup a project to use Uniauth. It has no functionality, and exists solely to show off the installable `uniauth` app.
+This app provides an example of how to set up a project to use Uniauth.
+It has no functionality, and exists solely to show off the installable `uniauth` app.
 
 ### Installation
 
@@ -8,7 +9,7 @@ This app provides an example of how to setup a project to use Uniauth. It has no
     mkvirtualenv myenv --python=$(which python3)
     
     # Install the dependencies
-    pip install django
+    pip install "django>=5"
     pip install python-cas
     pip install django-uniauth
     

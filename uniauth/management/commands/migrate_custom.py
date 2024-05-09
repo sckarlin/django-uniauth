@@ -14,7 +14,7 @@ from uniauth.utils import get_input
 
 
 class Command(BaseCommand):
-    help = "Migrates a project using custom User auhentication to Uniauth."
+    help = "Migrates a project using custom User authentication to Uniauth."
 
     @transaction.atomic
     def handle(self, *args, **options):

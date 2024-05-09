@@ -1,8 +1,4 @@
-try:
-    from django.conf.urls import url
-except ImportError:
-    from django.urls import re_path as url
-
+from django.urls import re_path
 from django.core.exceptions import ImproperlyConfigured
 
 from uniauth import views
@@ -20,11 +16,11 @@ if get_setting("UNIAUTH_LOGIN_DISPLAY_STANDARD"):
 app_name = "uniauth"
 
 urlpatterns = [
-    url(r"^login/$", views.login, name="login"),
-    url(
+    re_path(r"^login/$", views.login, name="login"),
+    re_path(
         r"^cas-login/(?P<institution>[a-z0-9\-]+)/$",
         views.cas_login,
         name="cas-login",
     ),
-    url(r"^logout/$", views.logout, name="logout"),
+    re_path(r"^logout/$", views.logout, name="logout"),
 ]
