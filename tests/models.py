@@ -1,3 +1,3 @@
 """
-Models used exlcusively during testing.
+Models used exclusively during testing.
 """

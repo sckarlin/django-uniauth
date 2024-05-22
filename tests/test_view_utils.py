@@ -7,7 +7,7 @@ from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
 from tests.utils import assert_urls_equivalent
-from uniauth.models import Institution, InstitutionAccount, LinkedEmail
+from uniauth.models import Institution, LinkedEmail
 from uniauth.views import (
     _add_institution_account,
     _get_global_context,
@@ -19,7 +19,7 @@ from uniauth.views import (
 
 class AddInstitutionAccountTests(TestCase):
     """
-    Tests the _add_instituion_account method in views.py
+    Tests the _add_institution_account method in views.py
     """
 
     def setUp(self):
@@ -43,7 +43,7 @@ class AddInstitutionAccountTests(TestCase):
         User.objects.create(username="cas-test-uni-jd123")
         _add_institution_account(user.uniauth_profile, "test-uni", "jd123")
         linked_accounts = user.uniauth_profile.accounts.all()
-        cas_user1 = User.objects.get(username="cas-test-uni-jd123")
+        _cas_user1 = User.objects.get(username="cas-test-uni-jd123")
         self.assertEqual(len(linked_accounts), 1)
         self.assertEqual(linked_accounts[0].institution, self.inst1)
         self.assertEqual(linked_accounts[0].cas_id, "jd123")
@@ -53,7 +53,7 @@ class AddInstitutionAccountTests(TestCase):
             user.uniauth_profile, "other-inst", "john.doe4"
         )
         linked_accounts = user.uniauth_profile.accounts.all()
-        cas_user2 = User.objects.get(username="cas-other-inst-john.doe4")
+        _cas_user2 = User.objects.get(username="cas-other-inst-john.doe4")
         self.assertEqual(len(linked_accounts), 2)
         self.assertEqual(linked_accounts[1].institution, self.inst2)
         self.assertEqual(linked_accounts[1].cas_id, "john.doe4")
@@ -171,7 +171,8 @@ class LoginSuccessTests(TestCase):
         self.client.force_login(user)
         session = self.client.session
 
-        response = self.client.get(reverse("uniauth:login"))
+        path = reverse("uniauth:login")
+        response = self.client.get(path)
 
         self.assertEqual(type(response), HttpResponseRedirect)
         self.assertTrue(session["jwt-refresh"])

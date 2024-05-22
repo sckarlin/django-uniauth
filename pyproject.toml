@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-uniauth"
-version = "1.4.1"
+version = "1.5.0"
 description = "A Django app for managing CAS and custom user authentication."
 keywords = ["django", "auth", "authentication", "cas", "sso", "single sign-on"]
 readme = "README.md"
@@ -45,5 +45,10 @@ line-length = 79
 profile = 'black'
 line_length = 79
 
+[tool.setuptools.package-data]
+"uniauth" = ["py.typed"]
+
 [tool.setuptools.packages.find]
-exclude = ["demo-app"]
+namespaces = false
+include = ["uniauth*"]
+exclude = ["demo_app*"]

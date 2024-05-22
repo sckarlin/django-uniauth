@@ -9,11 +9,7 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.forms import SetPasswordForm as AuthSetPasswordForm
 from django.contrib.auth.forms import UserCreationForm
-
-try:
-    from django.utils.translation import ugettext_lazy as _  # Django <3
-except ImportError:
-    from django.utils.translation import gettext_lazy as _  # Django >=3
+from django.utils.translation import gettext_lazy as _
 
 from uniauth.models import LinkedEmail
 from uniauth.utils import get_setting

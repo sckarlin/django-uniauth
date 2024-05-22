@@ -3,7 +3,7 @@ from django.test import TestCase, override_settings
 
 class SimpleTestCase(TestCase):
     """
-    Tests that the testing framework itself is setup appropiately
+    Tests that the testing framework itself is set up appropriately
     """
 
     def test_simple(self):
@@ -17,8 +17,8 @@ class SimpleTestCase(TestCase):
         """
         Ensure we can import uniauth + third party dependencies
         """
-        import requests
-        from cas import CASClient
+        import requests  # noqa
+        from cas import CASClient  # noqa
 
         from uniauth.models import UserProfile
 

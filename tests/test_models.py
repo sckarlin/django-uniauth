@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db import transaction
 from django.db.utils import IntegrityError
 from django.test import TestCase, override_settings
 from django.utils import timezone
@@ -27,11 +26,11 @@ class ModelSignalTests(TestCase):
         Ensure a UserProfile is automatically created
         whenever Users are
         """
-        user = User.objects.create(username="new-user")
+        _user = User.objects.create(username="new-user")
         self.assertTrue(
             UserProfile.objects.filter(user__username="new-user").exists()
         )
-        user2 = User.objects.create(
+        _user2 = User.objects.create(
             username="testusr@example.com", email="test.user@example.com"
         )
         self.assertTrue(
@@ -52,7 +51,7 @@ class ModelSignalTests(TestCase):
             User.objects.create(username="tmp-%d-days-ago" % i)
         # We must update the date_joined in a different for loop,
         # because otherwise, the users could get deleted on the
-        # create signal we're trying to test!
+        # 'create' signal we're trying to test!
         for i in range(10):
             date_joined = timezone.now() - timedelta(days=i)
             user = User.objects.get(username="tmp-%d-days-ago" % i)

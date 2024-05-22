@@ -1,5 +1,5 @@
-from django.urls import re_path
 from django.core.exceptions import ImproperlyConfigured
+from django.urls import re_path
 
 from uniauth import views
 from uniauth.utils import get_setting

@@ -16,6 +16,7 @@ class CASBackend(ModelBackend):
     a temporary username otherwise.
     """
 
+    # FIXME
     def authenticate(self, request, institution, ticket, service):
         user_model = get_user_model()
 
@@ -25,7 +26,7 @@ class CASBackend(ModelBackend):
             service_url=service,
             server_url=institution.cas_server_url,
         )
-        username, attributes, pgtiou = client.verify_ticket(ticket)
+        username, attributes, _ = client.verify_ticket(ticket)
 
         # Add the attributes returned by the CAS server to the session
         if request and attributes:

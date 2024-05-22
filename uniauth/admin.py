@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from uniauth import models
+from . import models
 
 admin.site.register(models.UserProfile)
 admin.site.register(models.LinkedEmail)

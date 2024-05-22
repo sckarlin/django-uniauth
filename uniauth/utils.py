@@ -58,7 +58,7 @@ def choose_username(email):
     return email + get_suffix(num)
 
 
-def decode_pk(encoded_pk):
+def decode_pk(encoded_pk: bytes) -> str:
     """
     Decodes the provided base64 encoded pk into its
     original value, as a string
@@ -66,11 +66,11 @@ def decode_pk(encoded_pk):
     return force_text(urlsafe_base64_decode(encoded_pk))
 
 
-def encode_pk(pk):
+def encode_pk(pk: int) -> bytes:
     """
     Returns the base64 encoding of the provided pk
     """
-    encoded = urlsafe_base64_encode(force_bytes(pk))
+    encoded = urlsafe_base64_encode(force_bytes(str(pk)))
     # On Django <2.1, this method returns a byte string
     try:
         encoded = encoded.decode()
@@ -141,7 +141,7 @@ def get_redirect_url(request, use_referer=False, default_url=None):
 
     Picks the first usable URL from the following list:
       1. URL provided as GET parameter under REDIRECT_FIELD_NAME
-      2. Referring page if use_referer is True, and set in header
+      2. Referring page when use_referer is True, and set in header
       3. default_url parameter
       4. UNIAUTH_LOGIN_REDIRECT_URL setting
     """

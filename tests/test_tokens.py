@@ -61,17 +61,27 @@ class GetJWTTokensForUserTests(TestCase):
         Ensure get_jwt_tokens_for_user returns strings that decode
         into valid Refresh and Access tokens
         """
-        refresh_encoded, access_encoded = get_jwt_tokens_for_user(self.user)
-        refresh = RefreshToken(token=refresh_encoded)
-        access = AccessToken(token=access_encoded)
-        self.assertEqual(refresh["user_id"], self.user.id)
-        self.assertEqual(access["user_id"], self.user.id)
+        refresh_token, access_token = get_jwt_tokens_for_user(self.user)
+        # str() for Token signs and returns it as a base64 encoded string
+        refresh_token_encoded = str(refresh_token)
+        access_token_encoded = str(access_token)
+        # Use noqa for token parameter for Token() due to
+        # https://github.com/jazzband/djangorestframework-simplejwt/issues/787
+        refresh_token_validated = RefreshToken(token=refresh_token_encoded)  # noqa
+        access_token_validated = AccessToken(token=access_token_encoded)  # noqa
+        self.assertEqual(refresh_token_validated["user_id"], self.user.id)
+        self.assertEqual(access_token_validated["user_id"], self.user.id)
 
-        refresh_encoded, access_encoded = get_jwt_tokens_for_user(self.user2)
-        refresh = RefreshToken(token=refresh_encoded)
-        access = AccessToken(token=access_encoded)
-        self.assertEqual(refresh["user_id"], self.user2.id)
-        self.assertEqual(access["user_id"], self.user2.id)
+        refresh_token, access_token = get_jwt_tokens_for_user(self.user2)
+        # str() for Token signs and returns it as a base64 encoded string
+        refresh_token_encoded = str(refresh_token)
+        access_token_encoded = str(access_token)
+        # Use noqa for token parameter for Token() due to
+        # https://github.com/jazzband/djangorestframework-simplejwt/issues/787
+        refresh_token_validated = RefreshToken(token=refresh_token_encoded)  # noqa
+        access_token_validated = AccessToken(token=access_token_encoded)  # noqa
+        self.assertEqual(refresh_token_validated["user_id"], self.user2.id)
+        self.assertEqual(access_token_validated["user_id"], self.user2.id)
 
     @skipUnless(
         custom_serializers_supported(),
@@ -92,9 +102,7 @@ class GetJWTTokensForUserTests(TestCase):
         If a custom token obtain serializer is defined, ensure
         get_jwt_tokens_for_user uses that custom class
         """
-        refresh_encoded, access_encoded = get_jwt_tokens_for_user(self.user)
-        refresh = RefreshToken(token=refresh_encoded)
-        access = AccessToken(token=access_encoded)
+        refresh, access = get_jwt_tokens_for_user(self.user)
         self.assertEqual(refresh["user_id"], self.user.id)
         self.assertEqual(access["user_id"], self.user.id)
         self.assertEqual(refresh["foo"], "bar")

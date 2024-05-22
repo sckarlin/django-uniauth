@@ -16,7 +16,7 @@ format:
 # You will still need to setup tox to work with multiple
 # python environments, perhaps with pyenv
 install:
-	pip install --upgrade pip wheel setuptools
+	pip install --upgrade pip wheel setuptools build
 	pip install -r requirements.txt
 	pip install tox
 
@@ -45,7 +45,9 @@ test-env:
 test-recreate:
 	tox -r
 
+build: clean
+	python -m build
+
 # Upload a new build to pypi
-upload_pypi: clean
-	python setup.py sdist bdist_wheel
+upload_pypi: build
 	twine upload dist/* --skip-existing

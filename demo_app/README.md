@@ -5,7 +5,7 @@ It has no functionality, and exists solely to show off the installable `uniauth`
 
 ### Installation
 
-    # (Recommended) Create a virtual env
+    # Create a virtual env
     mkvirtualenv myenv --python=$(which python3)
     
     # Install the dependencies

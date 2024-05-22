@@ -1,15 +1,11 @@
 import json
-from contextlib import contextmanager
 
-try:
-    from urlparse import parse_qs, urlparse
-except ImportError:
-    from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse
 
 
 def assert_urls_equivalent(actual, expected, assert_equal_fn):
     """
-    Checks if the the two URLs are funcationally equivalent,
+    Checks if the two URLs are functionally equivalent,
     forwarding to the provided assert_equal_fn if they are not
     """
     actual_path = actual.split("?")[0]

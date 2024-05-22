@@ -1,3 +1,5 @@
+from unittest import mock
+
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase, override_settings
 
@@ -7,11 +9,6 @@ from uniauth.backends import (
     UsernameOrLinkedEmailBackend,
 )
 from uniauth.models import Institution, InstitutionAccount, LinkedEmail
-
-try:
-    import mock
-except ImportError:
-    from unittest import mock
 
 
 class CASBackendTests(TestCase):
@@ -51,7 +48,7 @@ class CASBackendTests(TestCase):
             request,
             institution=self.inst,
             ticket="fake-ticket",
-            service="http://www.service.com/",
+            service="https://www.service.com/",
         )
         self.assertEqual(user, None)
         self.assertEqual(User.objects.count(), prev_num_users)
@@ -63,7 +60,7 @@ class CASBackendTests(TestCase):
         """
         mock_verify_ticket.return_value = (
             "newuser",
-            {"ticket": "fake-ticket", "service": "http://www.service.com/"},
+            {"ticket": "fake-ticket", "service": "https://www.service.com/"},
             None,
         )
         backend = CASBackend()
@@ -75,7 +72,7 @@ class CASBackendTests(TestCase):
             request,
             institution=self.inst,
             ticket="fake-ticket",
-            service="http://www.service.com/",
+            service="https://www.service.com/",
         )
         self.assertNotEqual(user, None)
         self.assertEqual(User.objects.count(), prev_num_users + 1)
@@ -84,7 +81,7 @@ class CASBackendTests(TestCase):
         )
         self.assertEqual(
             request.session["attributes"],
-            {"ticket": "fake-ticket", "service": "http://www.service.com/"},
+            {"ticket": "fake-ticket", "service": "https://www.service.com/"},
         )
 
     @mock.patch("cas.CASClientV2.verify_ticket")
@@ -101,7 +98,7 @@ class CASBackendTests(TestCase):
             institution=self.inst,
             cas_id="john123",
         )
-        user2 = User.objects.create(username="cas-test-inst-jane987")
+        _user2 = User.objects.create(username="cas-test-inst-jane987")
         fakeout = User.objects.create(
             username="fakeout@gmail.com", email="fakeout@verizon.net"
         )
@@ -115,7 +112,7 @@ class CASBackendTests(TestCase):
         # Test case where there is a user with an InstitutionAccount
         mock_verify_ticket.return_value = (
             "john123",
-            {"ticket": "fake-ticket", "service": "http://www.example.com/"},
+            {"ticket": "fake-ticket", "service": "https://www.example.com/"},
             None,
         )
         request = self._get_request()
@@ -123,20 +120,20 @@ class CASBackendTests(TestCase):
             request,
             institution=self.inst,
             ticket="fake-ticket",
-            service="http://www.example.com/",
+            service="https://www.example.com/",
         )
         self.assertNotEqual(user, None)
         self.assertEqual(user.username, "johndoe@gmail.com")
         self.assertEqual(User.objects.count(), prev_num_users)
         self.assertEqual(
             request.session["attributes"],
-            {"ticket": "fake-ticket", "service": "http://www.example.com/"},
+            {"ticket": "fake-ticket", "service": "https://www.example.com/"},
         )
 
-        # Test case where there is an existing unlinked account user
+        # Test case where there is an existing, unlinked account user
         mock_verify_ticket.return_value = (
             "jane987",
-            {"ticket": "ticket0123", "service": "http://someservice.gov/"},
+            {"ticket": "ticket0123", "service": "https://someservice.gov/"},
             None,
         )
         request = self._get_request()
@@ -144,14 +141,14 @@ class CASBackendTests(TestCase):
             request,
             institution=self.inst,
             ticket="ticket0123",
-            service="http://someservice.gov/",
+            service="https://someservice.gov/",
         )
         self.assertNotEqual(user, None)
         self.assertEqual(user.username, "cas-test-inst-jane987")
         self.assertEqual(User.objects.count(), prev_num_users)
         self.assertEqual(
             request.session["attributes"],
-            {"ticket": "ticket0123", "service": "http://someservice.gov/"},
+            {"ticket": "ticket0123", "service": "https://someservice.gov/"},
         )
 
     @mock.patch("cas.CASClientV2.verify_ticket")
@@ -164,7 +161,7 @@ class CASBackendTests(TestCase):
         # Test creating a new user
         mock_verify_ticket.return_value = (
             "newuser",
-            {"ticket": "fake-ticket", "service": "http://www.service.com/"},
+            {"ticket": "fake-ticket", "service": "https://www.service.com/"},
             None,
         )
         self.assertFalse(User.objects.filter(username="newuser").exists())
@@ -173,7 +170,7 @@ class CASBackendTests(TestCase):
             None,
             institution=self.inst,
             ticket="fake-ticket",
-            service="http://www.service.com/",
+            service="https://www.service.com/",
         )
         self.assertNotEqual(user, None)
         self.assertEqual(User.objects.count(), prev_num_users + 1)
@@ -184,7 +181,7 @@ class CASBackendTests(TestCase):
         # Test finding an existing user
         mock_verify_ticket.return_value = (
             "jane987",
-            {"ticket": "ticket0123", "service": "http://someservice.gov/"},
+            {"ticket": "ticket0123", "service": "https://someservice.gov/"},
             None,
         )
         User.objects.create(username="cas-test-inst-jane987")
@@ -193,7 +190,7 @@ class CASBackendTests(TestCase):
             None,
             institution=self.inst,
             ticket="ticket0123",
-            service="http://someservice.gov/",
+            service="https://someservice.gov/",
         )
         self.assertNotEqual(user, None)
         self.assertEqual(user.username, "cas-test-inst-jane987")
@@ -206,7 +203,7 @@ class CASBackendTests(TestCase):
             None,
             institution=self.inst,
             ticket="fake-ticket",
-            service="http://www.service.com/",
+            service="https://www.service.com/",
         )
         self.assertEqual(user, None)
         self.assertEqual(User.objects.count(), prev_num_users)

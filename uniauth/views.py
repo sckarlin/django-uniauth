@@ -1,3 +1,5 @@
+from urllib.parse import urlencode, urlunparse
+
 from cas import CASClient
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME,
@@ -57,13 +59,6 @@ from uniauth.utils import (
     is_tmp_user,
     is_unlinked_account,
 )
-
-try:
-    from urllib import urlencode
-
-    from urlparse import urlunparse
-except ImportError:
-    from urllib.parse import urlencode, urlunparse
 
 
 def _get_global_context(request):
@@ -139,8 +134,9 @@ def _login_success(request, user, next_url, drop_params=None):
             suffix = "?" + urlencode(query_params)
         if jwt_auth:
             refresh, access = get_jwt_tokens_for_user(user)
-            request.session["jwt-refresh"] = refresh
-            request.session["jwt-access"] = access
+            # str() for Token signs and returns it as a base64 encoded string
+            request.session["jwt-refresh"] = str(refresh)
+            request.session["jwt-access"] = str(access)
         return HttpResponseRedirect(next_url + suffix)
 
 

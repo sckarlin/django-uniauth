@@ -117,7 +117,7 @@ class FlushOldTmpUsersTests(TestCase):
         self.assertNotIn(self.tmp3, remaining_users)
         self.assertIn(self.real, remaining_users)
 
-    def test_flush_old_tmp_users_deletes_proper_users(self):
+    def test_flush_old_tmp_users_deletes_proper_users2(self):
         """
         Ensure the function uses a default days parameter if not provided
         """
@@ -158,7 +158,7 @@ class GetAccountUsernameSplitTests(TestCase):
 
     def test_get_account_username_split_invalid_users(self):
         """
-        Ensure it fails as expected for non unlinked account users
+        Ensure it fails as expected for non-unlinked account users
         """
 
         def _run_test(username):
@@ -230,7 +230,7 @@ class GetRedirectUrlTests(TestCase):
 
     def test_get_redirect_url_referer(self):
         """
-        Ensure method returns the referring page if use_referer
+        Ensure method returns the referring page when use_referer
         is True, and no relevant query parameter was provided
         """
         request = self.factory.get(
@@ -401,7 +401,7 @@ class IsTmpUserTests(TestCase):
 
     def test_is_tmp_user_institution_account(self):
         """
-        Ensure users logged in via an Insitution Account return
+        Ensure users logged in via an Institution Account return
         True if standalone accounts aren't allowed, False otherwise
         """
         user1 = User.objects.create(username="cas-princeton-netid")

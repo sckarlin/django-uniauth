@@ -1,17 +1,13 @@
 import os
 import sys
+from unittest import mock
 
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
 from uniauth.models import Institution, LinkedEmail, UserProfile
-
-try:
-    import mock
-except ImportError:
-    from unittest import mock
 
 
 class AddInstitutionCommandTests(TestCase):
@@ -33,7 +29,7 @@ class AddInstitutionCommandTests(TestCase):
         Ensures command works as expected for valid inputs
         """
         call_command("add_institution", "Test", "https://www.example.com")
-        call_command("add_institution", "Other Inst", "http://fed.foobar.edu/")
+        call_command("add_institution", "Other Inst", "https://fed.foobar.edu/")
         call_command(
             "add_institution",
             "Test",
@@ -45,7 +41,7 @@ class AddInstitutionCommandTests(TestCase):
             Institution(
                 name="Other Inst",
                 slug="other-inst",
-                cas_server_url="http://fed.foobar.edu/",
+                cas_server_url="https://fed.foobar.edu/",
             ),
             Institution(
                 name="Test",
@@ -66,7 +62,7 @@ class AddInstitutionCommandTests(TestCase):
             "https://www.example.com",
             "--update-existing",
         )
-        call_command("add_institution", "Other Inst", "http://fed.foobar.edu/")
+        call_command("add_institution", "Other Inst", "https://fed.foobar.edu/")
         call_command(
             "add_institution",
             "Test",
@@ -78,7 +74,7 @@ class AddInstitutionCommandTests(TestCase):
             Institution(
                 name="Other Inst",
                 slug="other-inst",
-                cas_server_url="http://fed.foobar.edu/",
+                cas_server_url="https://fed.foobar.edu/",
             ),
             Institution(
                 name="Test",
@@ -262,7 +258,7 @@ class MigrateCustomCommandTests(TestCase):
         self.assertEqual(self.john.uniauth_profile.linked_emails.count(), 0)
 
 
-class RemoveInsitutionCommandTests(TestCase):
+class RemoveInstitutionCommandTests(TestCase):
     """
     Tests the remove_institution management command
     """
