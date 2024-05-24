@@ -58,7 +58,7 @@ def choose_username(email):
     return email + get_suffix(num)
 
 
-def decode_pk(encoded_pk: bytes) -> str:
+def decode_pk(encoded_pk):
     """
     Decodes the provided base64 encoded pk into its
     original value, as a string
@@ -66,7 +66,7 @@ def decode_pk(encoded_pk: bytes) -> str:
     return force_text(urlsafe_base64_decode(encoded_pk))
 
 
-def encode_pk(pk: int) -> bytes:
+def encode_pk(pk):
     """
     Returns the base64 encoding of the provided pk
     """

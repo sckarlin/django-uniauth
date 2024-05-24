@@ -17,7 +17,7 @@ class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
 token_generator = EmailVerificationTokenGenerator()
 
 
-def get_jwt_tokens_for_user(user, **_kwargs: Any) -> tuple[RefreshToken, AccessToken]:
+def get_jwt_tokens_for_user(user, **_kwargs):
     """
     Generates a refresh token for the valid user
     """
