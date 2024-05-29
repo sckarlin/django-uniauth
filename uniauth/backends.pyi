@@ -1,19 +1,18 @@
-from _typeshed import Incomplete
 from django.contrib.auth.backends import ModelBackend
 from django.http.request import HttpRequest
 from typing import Any
 from django.contrib.auth.base_user import AbstractBaseUser
 
+from uniauth.models import Institution
+
+
 class CASBackend(ModelBackend):
-    # FIXME
     def authenticate(
             self,
             request: HttpRequest | None,
-            username: str | None = None,
-            password: Incomplete | None = None,
-            institution: Incomplete | None = None,
-            ticket: Incomplete | None = None,
-            service: Incomplete | None = None,
+            institution: Institution | None = None,
+            ticket: str | None = None,
+            service: str | None = None,
             **kwargs: Any,
     ) -> AbstractBaseUser | None: ...
 
@@ -22,8 +21,8 @@ class LinkedEmailBackend(ModelBackend):
             self,
             request: HttpRequest | None,
             username: str | None = None,
-            password: Incomplete | None = None,
-            email: Incomplete | None = None,
+            password: str | None = None,
+            email: str | None = None,
             **kwargs: Any,
     ) -> AbstractBaseUser | None: ...
 

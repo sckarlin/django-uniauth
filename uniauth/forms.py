@@ -23,7 +23,7 @@ class AddLinkedEmailForm(forms.Form):
     email = forms.EmailField(max_length=254, label="Email address")
 
     def __init__(self, user, *args, **kwargs):
-        super(AddLinkedEmailForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.user = user
 
     def clean_email(self):
@@ -61,7 +61,7 @@ class AddLinkedEmailForm(forms.Form):
         Ensure the user does not link more than the
         maximum number of linked emails per user.
         """
-        cleaned_data = super(AddLinkedEmailForm, self).clean()
+        cleaned_data = super().clean()
         max_linked_emails = get_setting("UNIAUTH_MAX_LINKED_EMAILS")
         num_linked_emails = self.user.uniauth_profile.linked_emails.count()
         if (max_linked_emails > 0) and (num_linked_emails >= max_linked_emails):
@@ -82,7 +82,7 @@ class ChangePrimaryEmailForm(forms.Form):
         """
         Set the choices to the current profile's verified linked emails.
         """
-        super(ChangePrimaryEmailForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.user = user
         verified_emails = LinkedEmail.objects.filter(
             profile=self.user.uniauth_profile, is_verified=True
@@ -138,7 +138,7 @@ class LoginForm(AuthenticationForm):
         Change the invalid login error message to mention
         using a correct email address instead of username.
         """
-        super(LoginForm, self).__init__(request, *args, **kwargs)
+        super().__init__(request, *args, **kwargs)
         self.error_messages["invalid_login"] = _(
             "Please enter a correct email and password."
         )

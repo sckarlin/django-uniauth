@@ -2,24 +2,25 @@ from _typeshed import Incomplete
 from typing import Any
 
 from django.conf import settings as settings
+from django.contrib.auth.models import User
 from django.db import models
 
 class UserProfile(models.Model):
-    user: Incomplete
+    user: models.OneToOneField
     def get_display_id(self) -> str: ...
 
 def create_user_profile(
-        sender: Any,
-        instance: Incomplete,
+        _sender: Any,
+        instance: User,
         created: bool,
-        **kwargs: Any,
+        **_kwargs: Any,
 ) -> None: ...
 
 def clear_old_tmp_users(
-        sender: Any,
-        instance: Any,
+        _sender: Any,
+        _instance: Any,
         created: bool,
-        **kwargs: Any,
+        **_kwargs: Any,
 ) -> None: ...
 
 class LinkedEmail(models.Model):

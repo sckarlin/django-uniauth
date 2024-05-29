@@ -1,9 +1,9 @@
 from _typeshed import Incomplete
-from typing import Iterable
+from typing import Iterable, List, Optional
 
-# FIXME
+
 def merge_model_instances(
         primary_object: Incomplete,
         alias_objects: Iterable[Incomplete],
-        field_trace: list[Incomplete] | None = None,
-) -> tuple[Incomplete, list[Incomplete], int]: ...
+        field_trace: Optional[List[Incomplete]] = None,
+) -> tuple[Incomplete, List[Incomplete], int]: ...

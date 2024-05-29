@@ -1,4 +1,5 @@
 from datetime import timedelta
+from urllib.parse import urlencode, urlunparse
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
@@ -6,20 +7,8 @@ from django.shortcuts import resolve_url
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.encoding import force_bytes
-
-try:
-    from django.utils.encoding import force_text
-except ImportError:
-    from django.utils.encoding import force_str as force_text
-
+from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
-try:
-    from urllib import urlencode
-
-    from urlparse import urlunparse
-except ImportError:
-    from urllib.parse import urlencode, urlunparse
 
 
 # The default value for all settings used by Uniauth
@@ -63,7 +52,7 @@ def decode_pk(encoded_pk):
     Decodes the provided base64 encoded pk into its
     original value, as a string
     """
-    return force_text(urlsafe_base64_decode(encoded_pk))
+    return force_str(urlsafe_base64_decode(encoded_pk))
 
 
 def encode_pk(pk):
@@ -145,7 +134,7 @@ def get_redirect_url(request, use_referer=False, default_url=None):
       3. default_url parameter
       4. UNIAUTH_LOGIN_REDIRECT_URL setting
     """
-    redirect_url = request.GET.get(REDIRECT_FIELD_NAME)
+    redirect_url = request.GET.get(REDIRECT_FIELD_NAME)  # noqa
     if not redirect_url:
         if use_referer:
             redirect_url = request.META.get("HTTP_REFERER")
@@ -172,7 +161,7 @@ def get_service_url(request, redirect_url=None):
     service_url = urlunparse(
         (get_protocol(request), request.get_host(), request.path, "", "", ""),
     )
-    query_params = request.GET.copy()
+    query_params = request.GET.copy()  # noqa
     query_params[REDIRECT_FIELD_NAME] = redirect_url or get_redirect_url(
         request
     )

@@ -1,5 +1,4 @@
-from _typeshed import Incomplete
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from django.contrib.auth.views import PasswordResetCompleteView
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -15,12 +14,12 @@ from django.forms.forms import BaseForm
 from uniauth.models import UserProfile
 
 
-def _get_global_context(request: Request) -> dict[str, Any]: ...
+def _get_global_context(request: Request) -> Dict[str, Any]: ...
 def _login_success(
         request: Request,
         user: str,
         next_url: str,
-        drop_params: list[str] | None = None,
+        drop_params: Optional[List[str]] = None,
 ) -> HttpResponse: ...
 
 def login(request: Request) -> HttpResponse: ...
@@ -49,10 +48,10 @@ def verify_token(request: Request, pk_base64: str, token: str) -> HttpResponse: 
 class PasswordReset(PasswordResetView):
     email_template_name: str
     form_class = PasswordResetForm
-    from_email: Incomplete
-    success_url: Incomplete
+    from_email: str
+    success_url: str
     template_name: str
-    extra_email_context: Incomplete
+    extra_email_context: Dict[str, Any]
     def form_valid(self, form: BaseForm) -> HttpResponse: ...
 
 class PasswordResetDone(PasswordResetDoneView):
@@ -60,14 +59,14 @@ class PasswordResetDone(PasswordResetDoneView):
 
 class PasswordResetVerify(PasswordResetConfirmView):
     form_class = SetPasswordForm
-    success_url: Incomplete
+    success_url: str
     template_name: str
     def dispatch(self, *args: Any, **kwargs: Any) -> HttpResponseBase: ...
     def form_valid(self, form: BaseForm) -> HttpResponse: ...
 
 class PasswordResetVerifyDone(PasswordResetCompleteView):
     template_name: str
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]: ...
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: ...
 
 def get_jwt_tokens_from_session(request: Request) -> JsonResponse: ...
 

@@ -33,7 +33,7 @@ class UserProfile(models.Model):
 
         Note that these IDs are not guaranteed to be unique.
         """
-        username = self.user.username
+        username = self.user.username  # type: ignore
         if "@" in username:
             return username.split("@")[0]
         if username.startswith("cas-"):
@@ -44,13 +44,13 @@ class UserProfile(models.Model):
 
     def __str__(self):
         try:
-            return self.user.email or self.user.username
-        except:
+            return self.user.email or self.user.username  # type: ignore
+        except AttributeError:
             return "NULL"
 
 
 @receiver(post_save, sender=get_user_model())
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(_sender, instance, created, **_kwargs):
     """
     Create a Uniauth profile automatically when a User is created.
 
@@ -66,7 +66,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=get_user_model())
-def clear_old_tmp_users(sender, instance, created, **kwargs):
+def clear_old_tmp_users(_sender, _instance, created, **_kwargs):
     """
     Deletes temporary users more than PASSWORD_RESET_TIMEOUT_DAYS
     old when a User is created.
@@ -133,20 +133,18 @@ class LinkedEmail(models.Model):
 
         # Ensure a user doesn't link more than the maximum
         max_linked_emails = get_setting("UNIAUTH_MAX_LINKED_EMAILS")
-        if (
-            max_linked_emails > 0
-            and self.profile.linked_emails.count() >= max_linked_emails
-        ):
-            raise ValidationError(
-                ("You can not link more than %d emails " "to your account.")
-                % max_linked_emails
-            )
-        super(LinkedEmail, self).clean()
+        if max_linked_emails > 0:
+            if self.profile.linked_emails.count() >= max_linked_emails:
+                raise ValidationError(
+                    f"You can not link more than {max_linked_emails} "
+                    f"emails to your account."
+                )
+        super().clean()
 
     def __str__(self):
         try:
             return "%s | %s" % (self.profile, self.address)
-        except:
+        except AttributeError:
             return "NULL"
 
 
@@ -170,7 +168,7 @@ class Institution(models.Model):
     def __str__(self):
         try:
             return self.slug
-        except:
+        except AttributeError:
             return "NULL"
 
 
@@ -205,5 +203,5 @@ class InstitutionAccount(models.Model):
     def __str__(self):
         try:
             return "%s | %s | account" % (self.profile, self.institution)
-        except:
+        except AttributeError:
             return "NULL"

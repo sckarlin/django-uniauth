@@ -39,7 +39,7 @@ def merge_model_instances(primary_object, alias_objects, field_trace=None):
     # get related fields
     related_fields = list(
         filter(
-            lambda x: x.is_relation is True, primary_object._meta.get_fields()
+            lambda x: x.is_relation is True, primary_object._meta.get_fields()  # noqa
         )
     )
 
@@ -130,7 +130,7 @@ def merge_model_instances(primary_object, alias_objects, field_trace=None):
 
         for field in generic_fields:
             filter_kwargs = {
-                field.fk_field: alias_object._get_pk_val(),
+                field.fk_field: alias_object._get_pk_val(),  # noqa
                 field.ct_field: field.get_content_type(alias_object),
             }
             related_objects = field.model.objects.filter(**filter_kwargs)

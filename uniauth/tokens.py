@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.module_loading import import_string
 from rest_framework_simplejwt.settings import api_settings as jwt_settings

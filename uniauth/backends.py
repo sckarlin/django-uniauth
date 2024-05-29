@@ -16,10 +16,19 @@ class CASBackend(ModelBackend):
     a temporary username otherwise.
     """
 
-    # FIXME
-    def authenticate(self, request, institution, ticket, service):
-        user_model = get_user_model()
-
+    def authenticate(self, request,
+                     institution=None, ticket=None, service=None,
+                     **kwargs):
+        # Function signature is compatible with super class.
+        # We now assert that the right parameters are supplied.
+        if institution is None:
+            raise ValueError("Institution must be provided and not None")
+        if ticket is None:
+            raise ValueError("Ticket must be provided and not None")
+        if service is None:
+            raise ValueError("Service must be provided and not None")
+        if kwargs:
+            raise ValueError("Unexpected arguments")
         # Attempt to verify the ticket with the institution's CAS server
         client = CASClient(
             version=2,
@@ -27,15 +36,12 @@ class CASBackend(ModelBackend):
             server_url=institution.cas_server_url,
         )
         username, attributes, _ = client.verify_ticket(ticket)
-
         # Add the attributes returned by the CAS server to the session
-        if request and attributes:
-            request.session["attributes"] = attributes
-
+        if (request is not None) and attributes:
+            request.session["attributes"] = attributes  # noqa
         # If no username was returned, verification failed
         if not username:
             return None
-
         # Attempt to find a user possessing an account
         # with that username for the institution
         try:
@@ -44,15 +50,14 @@ class CASBackend(ModelBackend):
             ).profile.user
         except InstitutionAccount.DoesNotExist:
             user = None
-
         # If such a user does not exist, get or create
         # one with a deterministic, CAS username
         if not user:
             temp_username = "cas-%s-%s" % (institution.slug, username)
-            user, created = user_model._default_manager.get_or_create(
+            user_model = get_user_model()
+            user, created = user_model._default_manager.get_or_create(  # noqa
                 **{user_model.USERNAME_FIELD: temp_username}
             )
-
         return user
 
 
@@ -73,35 +78,30 @@ class LinkedEmailBackend(ModelBackend):
         Query for users with a verified linked email
         address matching the provided email value
         """
-        return user_model._default_manager.filter(
+        return user_model._default_manager.filter(  # noqa
             uniauth_profile__linked_emails__address__iexact=email,
             uniauth_profile__linked_emails__is_verified=True,
         ).all()
 
     def authenticate(self, request, email=None, password=None, **kwargs):
         user_model = get_user_model()
-
         # If email field was not provided, check for
         # alternative names, or for a "username" field
         if email is None:
             email = kwargs.get("email_address")
             if email is None:
                 email = kwargs.get("username")
-
                 # If a custom user model is being used, check for
                 # the email in the specified username field
                 if email is None:
                     email = kwargs.get(user_model.USERNAME_FIELD)
-
         # Get the user(s) who own the provided email address
-        users = self._get_users(user_model, email)
-
+        users = self._get_users(user_model, email)  # noqa
         # If there were no matching users, run the password
         # hasher once, to guard against timing attacks
         if not users:
             user_model().set_password(password)
             return None
-
         # Otherwise, check the password for each matched user
         for user in users:
             if user.check_password(password):
@@ -116,13 +116,13 @@ class UsernameOrLinkedEmailBackend(LinkedEmailBackend):
     the account, along with their password.
     """
 
-    def _get_users(self, user_model, username):
+    def _get_users(self, user_model, username):  # noqa
         """
         Query for verified users with a username or linked
         email address matching the provided username value
         """
         username_field = user_model.USERNAME_FIELD
-        matched_users = user_model._default_manager.filter(
+        matched_users = user_model._default_manager.filter(  # noqa
             (Q(**{username_field: username}))
             | (
                 Q(uniauth_profile__linked_emails__address__iexact=username)

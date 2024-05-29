@@ -1,6 +1,6 @@
-from _typeshed import Incomplete
-from typing import Any
+from typing import Any, Optional
 
+from django.contrib.auth.models import User
 from django.http import HttpRequest
 
 DEFAULT_SETTING_VALUES: dict[str, Any]
@@ -17,14 +17,14 @@ def get_random_username() -> str: ...
 def get_redirect_url(
         request: HttpRequest,
         use_referer: bool = False,
-        default_url: Incomplete | None = None,
+        default_url: Optional[str] = None,
 ) -> str: ...
 
 def get_service_url(
         request: HttpRequest,
-        redirect_url: Incomplete | None = None,
+        redirect_url: Optional[str] = None,
 ) -> str: ...
 
 def get_setting(setting_name: str) -> Any: ...
-def is_tmp_user(user: Incomplete) -> bool: ...
-def is_unlinked_account(user: Incomplete) -> bool: ...
+def is_tmp_user(user: User) -> bool: ...
+def is_unlinked_account(user: User) -> bool: ...
