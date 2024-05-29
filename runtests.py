@@ -2,7 +2,7 @@
 import os
 import sys
 from pathlib import Path
-from typing import NoReturn
+from typing import NoReturn, List, Optional
 
 import django
 from django.conf import settings
@@ -18,7 +18,7 @@ def usage(message: str = '') -> NoReturn:
     sys.exit(exit_value)
 
 
-def get_test_labels(argv: list[str] | None = None) -> list[str]:
+def get_test_labels(argv: Optional[List[str]] = None) -> List[str]:
     if argv is None:
         argv = sys.argv
     if len(argv) > 1:
