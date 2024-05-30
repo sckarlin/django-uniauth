@@ -10,15 +10,15 @@ class UserProfile(models.Model):
     def get_display_id(self) -> str: ...
 
 def create_user_profile(
-        _sender: Any,
+        sender: Any,
         instance: User,
         created: bool,
         **_kwargs: Any,
 ) -> None: ...
 
 def clear_old_tmp_users(
-        _sender: Any,
-        _instance: Any,
+        sender: Any,
+        instance: Any,
         created: bool,
         **_kwargs: Any,
 ) -> None: ...

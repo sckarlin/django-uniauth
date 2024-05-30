@@ -376,7 +376,7 @@ class UsernameOrLinkedEmailBackendTests(EmailBackendTests):
     Tests the UsernameOrLinkedEmailBackend in backends.py
     """
 
-    def test_username_orlinked_email_backend_valid_credentials(self):
+    def test_username_or_linked_email_backend_valid_credentials(self):
         """
         Ensure backend returns appropriate user when valid
         credentials are provided

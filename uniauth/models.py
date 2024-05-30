@@ -50,7 +50,7 @@ class UserProfile(models.Model):
 
 
 @receiver(post_save, sender=get_user_model())
-def create_user_profile(_sender, instance, created, **_kwargs):
+def create_user_profile(sender, instance, created, **kwargs):  # noqa
     """
     Create a Uniauth profile automatically when a User is created.
 
@@ -66,7 +66,7 @@ def create_user_profile(_sender, instance, created, **_kwargs):
 
 
 @receiver(post_save, sender=get_user_model())
-def clear_old_tmp_users(_sender, _instance, created, **_kwargs):
+def clear_old_tmp_users(sender, instance, created, **kwargs):  # noqa
     """
     Deletes temporary users more than PASSWORD_RESET_TIMEOUT_DAYS
     old when a User is created.
