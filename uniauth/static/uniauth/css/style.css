@@ -12,7 +12,7 @@
 
 .badge-primary {
     background-color: #039cfd;
-    colore: #FFFFFF;
+    color: #FFFFFF;
 }
 
 .btn-action {
@@ -36,7 +36,7 @@
 }
 
 #cas-select-container {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .centered-title {
@@ -75,12 +75,12 @@
 }
 
 div.hr-line-dashed.only-cas-login {
-    margin-top
+    margin-top: 0
 }
 
 button.icon-btn {
     background-color: transparent;
-    border: 0px;
+    border: 0;
     cursor: pointer;
 }
 
@@ -136,12 +136,12 @@ input.form-control::placeholder {
 }
 
 #login-form-wrapper.only-cas-login div.form-group {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #login-title {
     display: block;
-    font-family: Roboto;
+    font-family: Roboto, Arial, sans-serif;
     font-weight: 300;
     text-align: center;
 }
@@ -160,7 +160,7 @@ input.form-control::placeholder {
 }
 
 .no-margin-bottom {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #password-reset-form-wrapper form {
@@ -176,7 +176,7 @@ input.form-control::placeholder {
 }
 
 #password-reset-verify-success-form-wrapper #submit-btn {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #password-reset-verify-success-title {
@@ -209,7 +209,7 @@ input.form-control::placeholder {
 }
 
 #settings-form-spacer {
-    height: 0px;
+    height: 0;
 }
 
 #settings-form-wrapper {
@@ -277,7 +277,7 @@ input.form-control::placeholder {
 
 .signup-row label {
     font-weight: 700;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .signup-row input {
@@ -311,7 +311,7 @@ div.spacer {
 }
 
 .success-wrapper {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     margin-top: 10px;
 }
 
@@ -319,13 +319,13 @@ div.spacer {
     background: #4c5667;
     height: 40%;
     position: fixed;
-    top: 0px;
+    top: 0;
     width: 100%;
 }
 
 div.uniauth-wrapper.wrapper.wrapper-content {
     border-radius: 5px;
-    box-shadow: 0px 2px 1px;
+    box-shadow: 0 2px 1px;
     left: calc(50% - 160px);
     margin-bottom: 20px;
     overflow: hidden;
@@ -339,7 +339,7 @@ div.uniauth-wrapper.wrapper.wrapper-content {
 }
 
 div.uniauth-wrapper div.ibox {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #verify-failure-form-wrapper {
